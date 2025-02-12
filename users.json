@@ -1,0 +1,191 @@
+{
+  "yalini5315@nike4s.com": {
+    "email": "yalini5315@nike4s.com",
+    "password": "$2b$10$G9L7qaVD.xkkyBqKbE.8mOJS3.KtrerrvKcqAk4UdcSAD3VOSsuwa",
+    "chats": [
+      {
+        "id": 1739370404386,
+        "title": "New Chat 2",
+        "messages": [
+          {
+            "id": 1739370404386,
+            "content": "hii",
+            "sender": "user"
+          },
+          {
+            "id": 1739370406187,
+            "content": "Hello! How can I assist you?",
+            "sender": "ai"
+          },
+          {
+            "id": 1739370422257,
+            "content": "what is todays date",
+            "sender": "user"
+          },
+          {
+            "id": 1739370424609,
+            "content": "Today's date is not specified in the message, could you please provide more context or details?",
+            "sender": "ai"
+          },
+          {
+            "id": 1739370452205,
+            "content": "tell me date",
+            "sender": "user"
+          },
+          {
+            "id": 1739370453790,
+            "content": "You want to know the current date, is that correct?",
+            "sender": "ai"
+          },
+          {
+            "id": 1739370458601,
+            "content": "yes",
+            "sender": "user"
+          },
+          {
+            "id": 1739370459832,
+            "content": "I am unable to understand the massage.",
+            "sender": "ai"
+          },
+          {
+            "id": 1739370486636,
+            "content": "how to make cake",
+            "sender": "user"
+          },
+          {
+            "id": 1739370488504,
+            "content": "To make a cake, you'll need ingredients like flour, sugar, eggs, and butter. You can find many cake recipes online or in cookbooks. Would you like a specific recipe or some general tips on cake-making?",
+            "sender": "ai"
+          },
+          {
+            "id": 1739370514646,
+            "content": "tell me recipe of cake step by step",
+            "sender": "user"
+          },
+          {
+            "id": 1739370517072,
+            "content": "Here's a simple recipe for a classic cake: Ingredients: 2 cups all-purpose flour, 1 teaspoon baking powder, 1 teaspoon salt, 1 cup unsalted butter, softened, 1 3/4 cups granulated sugar, 3 large eggs, 2 teaspoons vanilla extract. Instructions: Preheat oven to 350°F (180°C). Grease two 9-inch (23cm) round cake pans. Whisk together flour, baking powder, and salt. Beat butter and sugar until light and fluffy. Beat in eggs one at a time, then beat in vanilla extract. With mixer on low speed, gradually add flour mixture to wet ingredients and mix until just combined. Divide batter evenly between prepared pans. Bake 30-35 minutes or until toothpick inserted in center comes out clean. Let cool in pans 10 minutes before transferring to wire rack to cool completely.",
+            "sender": "ai"
+          },
+          {
+            "id": 1739370528820,
+            "content": "there how are you",
+            "sender": "user"
+          },
+          {
+            "id": 1739370531037,
+            "content": "I'm doing well, thanks for asking.",
+            "sender": "ai"
+          },
+          {
+            "id": 1739370540619,
+            "content": "can you tell me the recipe of cake",
+            "sender": "user"
+          },
+          {
+            "id": 1739370542453,
+            "content": "Here's a simple recipe for a classic cake: Ingredients: 2 cups all-purpose flour, 1 teaspoon baking powder, 1 teaspoon salt, 1 cup unsalted butter, softened, 1 3/4 cups granulated sugar, 3 large eggs, 2 teaspoons vanilla extract. Instructions: Preheat oven to 350°F (180°C). Grease two 9-inch round cake pans. Mix flour, baking powder, and salt. Beat butter and sugar, then add eggs one by one. Add vanilla extract and mix. Combine dry ingredients and mix until just combined. Divide batter into prepared pans and bake for 30-35 minutes or until a toothpick comes out clean. Let cool and serve.",
+            "sender": "ai"
+          }
+        ]
+      },
+      {
+        "id": 1739264678298,
+        "title": "New Chat 1",
+        "messages": [
+          {
+            "id": 1739264678298,
+            "content": "hii",
+            "sender": "user"
+          },
+          {
+            "id": 1739264678878,
+            "content": "hii",
+            "sender": "ai"
+          },
+          {
+            "id": 1739264683901,
+            "content": "hello",
+            "sender": "user"
+          },
+          {
+            "id": 1739264684229,
+            "content": "hello",
+            "sender": "ai"
+          },
+          {
+            "id": 1739264690468,
+            "content": "hey there how are you",
+            "sender": "user"
+          },
+          {
+            "id": 1739264690796,
+            "content": "hey there how are you",
+            "sender": "ai"
+          },
+          {
+            "id": 1739298937200,
+            "content": "ff",
+            "sender": "user"
+          },
+          {
+            "id": 1739298937781,
+            "content": "ff",
+            "sender": "ai"
+          },
+          {
+            "id": 1739298938910,
+            "content": "ff",
+            "sender": "user"
+          },
+          {
+            "id": 1739298938917,
+            "content": "ff",
+            "sender": "ai"
+          },
+          {
+            "id": 1739298939821,
+            "content": "ff",
+            "sender": "user"
+          },
+          {
+            "id": 1739298940142,
+            "content": "ff",
+            "sender": "ai"
+          },
+          {
+            "id": 1739298941111,
+            "content": "ff",
+            "sender": "user"
+          },
+          {
+            "id": 1739298941118,
+            "content": "ff",
+            "sender": "ai"
+          },
+          {
+            "id": 1739299465943,
+            "content": "hey",
+            "sender": "user"
+          },
+          {
+            "id": 1739299466515,
+            "content": "hey",
+            "sender": "ai"
+          },
+          {
+            "id": 1739299739112,
+            "content": "hii",
+            "sender": "user"
+          },
+          {
+            "id": 1739299739692,
+            "content": "hii",
+            "sender": "ai"
+          }
+        ]
+      }
+    ],
+    "verified": true
+  }
+}
