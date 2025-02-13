@@ -25,7 +25,7 @@ async function getGroqReply(message, client) {
           messages: [
               {
                   role: 'user',
-                  content: `${AI_PROMOT} 'REAL MASSAGE: ' ${message}`,
+                  content: `${AI_PROMOT} 'REAL MASSAGE: '${message}`,
               }
           ],
           model: 'llama-3.3-70b-versatile',
