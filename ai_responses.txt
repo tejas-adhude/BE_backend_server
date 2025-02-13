@@ -1,0 +1,3 @@
+Input: code for reverse string
+Output: {"tends_task":"False","reply":"You can use slicing to reverse a string in Python: `str[::-1]`, or use the `reversed` function in combination with `join`: `''.join(reversed(str))`."}
+

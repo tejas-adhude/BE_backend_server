@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken")
 const fs = require("fs")
 const cors = require("cors")
 const nodemailer = require("nodemailer")
+const Groq = require('groq-sdk');
+const { AI_PROMOT } = require('./utils.js');
 require("dotenv").config();
 
 const app = express()
@@ -12,7 +14,29 @@ app.use(cors())
 
 const SECRET_KEY = process.env.SECRET_KEY // Store in env variable in real apps
 const USER_FILE = process.env.USER_FILE
+const GROQ_API_KEY = process.env.AI_API_KEY;
 const OTP_EXPIRY = 10 * 60 * 1000 // 10 minutes
+
+const GroqGlobal = new Groq({ apiKey: GROQ_API_KEY });
+
+async function getGroqReply(message, client) {
+  try {
+      const chatCompletion = await client.chat.completions.create({
+          messages: [
+              {
+                  role: 'user',
+                  content: `${AI_PROMOT} 'REAL MASSAGE: ' ${message}`,
+              }
+          ],
+          model: 'llama-3.3-70b-versatile',
+      });
+
+      return chatCompletion.choices[0].message.content;
+  } catch (error) {
+      console.error('Error fetching AI response:', error);
+      return 'Error: Unable to get response.';
+  }
+}
 
 // Nodemailer transporter
 const transporter = nodemailer.createTransport({
@@ -57,6 +81,12 @@ async function sendOTP(email, otp) {
 
   await transporter.sendMail(mailOptions)
 }
+
+app.post("/get-ai-reply", async (req, res) => {
+  const { message } = req.body;
+  const reply = await getGroqReply(message, GroqGlobal);
+  res.json({ reply });
+});
 
 // Signup route (first step)
 app.post("/signup", async (req, res) => {
