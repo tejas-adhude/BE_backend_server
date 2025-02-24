@@ -4,6 +4,154 @@
     "password": "$2b$10$G9L7qaVD.xkkyBqKbE.8mOJS3.KtrerrvKcqAk4UdcSAD3VOSsuwa",
     "chats": [
       {
+        "id": 1740305561699,
+        "title": "New Chat 8",
+        "messages": [
+          {
+            "id": 1740305561699,
+            "content": "hello",
+            "sender": "user"
+          },
+          {
+            "id": 1740305562937,
+            "content": "Hello! How can I assist you today?",
+            "sender": "ai"
+          },
+          {
+            "id": 1740305569123,
+            "content": "What's your name?",
+            "sender": "user"
+          },
+          {
+            "id": 1740305570229,
+            "content": "I'm an AI assistant, I don't have a personal name.",
+            "sender": "ai"
+          },
+          {
+            "id": 1740305580467,
+            "content": "Who is the founder of you?",
+            "sender": "user"
+          },
+          {
+            "id": 1740305581678,
+            "content": "I was created by Meta, but I don't have a single founder like a human would. My development is the result of a lot of hard work by a large team of people.",
+            "sender": "ai"
+          },
+          {
+            "id": 1740305600136,
+            "content": "Do you know who is Narendra Modi?",
+            "sender": "user"
+          },
+          {
+            "id": 1740305601439,
+            "content": "Narendra Modi is the 14th and current Prime Minister of India. He has been in office since May 2014.",
+            "sender": "ai"
+          },
+          {
+            "id": 1740305614234,
+            "content": "Thank you.",
+            "sender": "user"
+          },
+          {
+            "id": 1740305615233,
+            "content": "You're welcome.",
+            "sender": "ai"
+          }
+        ]
+      },
+      {
+        "id": 1740305189715,
+        "title": "New Chat 7",
+        "messages": [
+          {
+            "id": 1740305189716,
+            "content": "hello",
+            "sender": "user"
+          },
+          {
+            "id": 1740305191031,
+            "content": "Hello! How can I assist you today?",
+            "sender": "ai"
+          },
+          {
+            "id": 1740305206963,
+            "content": "who is Prime Minister Of India",
+            "sender": "user"
+          },
+          {
+            "id": 1740305208439,
+            "content": "The current Prime Minister of India is Narendra Modi.",
+            "sender": "ai"
+          },
+          {
+            "id": 1740305218007,
+            "content": "Whats time now",
+            "sender": "user"
+          },
+          {
+            "id": 1740305219080,
+            "content": "The current time is 03:36 PM",
+            "sender": "ai"
+          },
+          {
+            "id": 1740305244420,
+            "content": "What? What is today's date?",
+            "sender": "user"
+          },
+          {
+            "id": 1740305245601,
+            "content": "I am not able to find the date for you, but I can tell you the current time if you want.",
+            "sender": "ai"
+          },
+          {
+            "id": 1740305257306,
+            "content": "Please tell me the current time.",
+            "sender": "user"
+          },
+          {
+            "id": 1740305258405,
+            "content": "You want to know the current time, right?",
+            "sender": "ai"
+          },
+          {
+            "id": 1740305273354,
+            "content": "yes tell me",
+            "sender": "user"
+          },
+          {
+            "id": 1740305274468,
+            "content": "I am unable to understand the message.",
+            "sender": "ai"
+          },
+          {
+            "id": 1740305297298,
+            "content": "close",
+            "sender": "user"
+          },
+          {
+            "id": 1740305298353,
+            "content": "I am unable to understand the message.",
+            "sender": "ai"
+          }
+        ]
+      },
+      {
+        "id": 1740305038678,
+        "title": "New Chat 6",
+        "messages": [
+          {
+            "id": 1740305038678,
+            "content": "hello",
+            "sender": "user"
+          },
+          {
+            "id": 1740305040100,
+            "content": "Hello! How can I assist you?",
+            "sender": "ai"
+          }
+        ]
+      },
+      {
         "id": 1739715069235,
         "title": "New Chat 5",
         "messages": [
@@ -395,5 +543,29 @@
       }
     ],
     "verified": true
+  },
+  "poorvashakhairnar@gmail.com": {
+    "email": "poorvashakhairnar@gmail.com",
+    "password": "$2b$10$TQLhyMw8ztsGCxdQU8nVxugttoVZK/kN5pUtvobQnzILRqRu3AxcG",
+    "chats": [],
+    "otp": "613574",
+    "otpExpiry": 1740304249959,
+    "verified": false
+  },
+  "poorvashakk12@gmail.com": {
+    "email": "poorvashakk12@gmail.com",
+    "password": "$2b$10$cyf7FfNGawn33g7smUkk0et0/OFWTl6ZVv4HlVHrz39aG7WJtx9Dm",
+    "chats": [],
+    "otp": "679256",
+    "otpExpiry": 1740305332039,
+    "verified": false
+  },
+  "jamoj12003@bitflirt.com": {
+    "email": "jamoj12003@bitflirt.com",
+    "password": "$2b$10$Qo7tPUzpOEgf8bR5oMTp.OuCMIs5O96aelSaNDi/Ag1yxKW.u5sle",
+    "chats": [],
+    "otp": "471459",
+    "otpExpiry": 1740305400727,
+    "verified": false
   }
 }

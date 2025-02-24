@@ -1,42 +1,22 @@
-const express = require("express")
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
-const fs = require("fs")
-const cors = require("cors")
-const nodemailer = require("nodemailer")
+const express = require("express");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const cors = require("cors");
+const nodemailer = require("nodemailer");
 const Groq = require('groq-sdk');
 const { AI_PROMOT } = require('./utils.js');
+const { db, auth } = require("./firebase"); // Firebase connectivity
 require("dotenv").config();
 
-const app = express()
-app.use(express.json())
-app.use(cors())
+const app = express();
+app.use(express.json());
+app.use(cors());
 
-const SECRET_KEY = process.env.SECRET_KEY // Store in env variable in real apps
-const USER_FILE = process.env.USER_FILE
+const SECRET_KEY = process.env.SECRET_KEY; // Store in env variable in real apps
 const GROQ_API_KEY = process.env.AI_API_KEY;
-const OTP_EXPIRY = 10 * 60 * 1000 // 10 minutes
+const OTP_EXPIRY = 10 * 60 * 1000; // 10 minutes
 
 const GroqGlobal = new Groq({ apiKey: GROQ_API_KEY });
-
-async function getGroqReply(message, client) {
-  try {
-      const chatCompletion = await client.chat.completions.create({
-          messages: [
-              {
-                  role: 'user',
-                  content: `${AI_PROMOT} 'REAL MASSAGE: '${message}`,
-              }
-          ],
-          model: 'llama-3.3-70b-versatile',
-      });
-
-      return chatCompletion.choices[0].message.content;
-  } catch (error) {
-      console.error('Error fetching AI response:', error);
-      return 'Error: Unable to get response.';
-  }
-}
 
 // Nodemailer transporter
 const transporter = nodemailer.createTransport({
@@ -45,29 +25,16 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-})
+});
 
-// Helper function to read users from file
-function readUsers() {
-  if (!fs.existsSync(USER_FILE)) {
-    return {}
-  }
-  return JSON.parse(fs.readFileSync(USER_FILE, "utf8"))
-}
-
-// Helper function to write users to file
-function writeUsers(users) {
-  fs.writeFileSync(USER_FILE, JSON.stringify(users, null, 2))
-}
-
-// Generate JWT token with expiration
+// Generate JWT token
 function generateToken(email) {
-  return jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" })
+  return jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" });
 }
 
 // Generate OTP
 function generateOTP() {
-  return Math.floor(100000 + Math.random() * 900000).toString()
+  return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
 // Send OTP via email
@@ -77,93 +44,124 @@ async function sendOTP(email, otp) {
     to: email,
     subject: "Your OTP for Signup",
     text: `Your OTP is ${otp}. It will expire in 10 minutes.`,
-  }
+  };
 
-  await transporter.sendMail(mailOptions)
+  await transporter.sendMail(mailOptions);
 }
 
+// Get AI response
+async function getGroqReply(message, client) {
+  try {
+    const chatCompletion = await client.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content: `${AI_PROMOT} 'REAL MESSAGE: '${message}`,
+        },
+      ],
+      model: "llama-3.3-70b-versatile",
+    });
+
+    return chatCompletion.choices[0].message.content;
+  } catch (error) {
+    console.error("Error fetching AI response:", error);
+    return "Error: Unable to get response.";
+  }
+}
+
+// API to get AI response
 app.post("/get-ai-reply", async (req, res) => {
   const { message } = req.body;
   const reply = await getGroqReply(message, GroqGlobal);
   res.json({ reply });
 });
 
-// Signup route (first step)
+// Signup route
 app.post("/signup", async (req, res) => {
-  const { email, password } = req.body
-  // console.log(email,password)
-  const users = readUsers()
+  const { email, password } = req.body;
 
-  if (users[email] && users[email].verified) {
-    return res.status(403).json({ error: "User already exists" })
+  try {
+    const userDoc = await db.collection("users").doc(email).get();
+    if (userDoc.exists && userDoc.data().verified) {
+      return res.status(403).json({ error: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const otp = generateOTP();
+    const otpExpiry = Date.now() + OTP_EXPIRY;
+
+    await db.collection("users").doc(email).set({
+      email,
+      password: hashedPassword,
+      chats: [],
+      otp,
+      otpExpiry,
+      verified: false,
+    });
+
+    await sendOTP(email, otp);
+
+    res.json({ message: "OTP sent to your email" });
+  } catch (error) {
+    res.status(500).json({ error: "Signup failed", details: error.message });
   }
-
-  const hashedPassword = await bcrypt.hash(password, 10)
-  const otp = generateOTP()
-  const otpExpiry = Date.now() + OTP_EXPIRY
-
-  users[email] = {
-    email,
-    password: hashedPassword,
-    chats: [],
-    otp,
-    otpExpiry,
-    verified: false,
-  }
-
-  writeUsers(users)
-
-  await sendOTP(email, otp)
-
-  res.json({ message: "OTP sent to your email" })
-})
+});
 
 // OTP verification route
-app.post("/verify-otp", (req, res) => {
-  const { email, otp } = req.body
-  const users = readUsers()
+app.post("/verify-otp", async (req, res) => {
+  const { email, otp } = req.body;
 
-  const user = users[email]
-  if (!user) {
-    return res.status(404).json({ error: "User not found" })
+  try {
+    const userDoc = await db.collection("users").doc(email).get();
+    if (!userDoc.exists) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const user = userDoc.data();
+
+    if (user.otp !== otp) {
+      return res.status(400).json({ error: "Invalid OTP" });
+    }
+
+    if (Date.now() > user.otpExpiry) {
+      return res.status(400).json({ error: "OTP expired" });
+    }
+
+    await db.collection("users").doc(email).update({
+      verified: true,
+      otp: null,
+      otpExpiry: null,
+    });
+
+    const token = generateToken(email);
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ error: "OTP verification failed", details: error.message });
   }
-
-  if (user.otp !== otp) {
-    return res.status(400).json({ error: "Invalid OTP" })
-  }
-
-  if (Date.now() > user.otpExpiry) {
-    return res.status(400).json({ error: "OTP expired" })
-  }
-
-  user.verified = true
-  delete user.otp
-  delete user.otpExpiry
-
-  writeUsers(users)
-
-  const token = generateToken(email)
-  res.json({ token })
-})
+});
 
 // Login route
 app.post("/login", async (req, res) => {
-  // console.log(req.body)
   const { email, password } = req.body;
-  const users = readUsers();
 
-  const user = users[email];
-  if (!user) {
-    return res.status(401).json({ error: "User not found" });
+  try {
+    const userDoc = await db.collection("users").doc(email).get();
+    if (!userDoc.exists) {
+      return res.status(401).json({ error: "User not found" });
+    }
+
+    const user = userDoc.data();
+    const validPassword = await bcrypt.compare(password, user.password);
+
+    if (!validPassword) {
+      return res.status(401).json({ error: "Invalid password" });
+    }
+
+    const token = generateToken(email);
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ error: "Login failed", details: error.message });
   }
-
-  const validPassword = await bcrypt.compare(password, user.password);
-  if (!validPassword) {
-    return res.status(401).json({ error: "Invalid password" });
-  }
-
-  const token = generateToken(email);
-  res.json({ token });
 });
 
 // Middleware to verify JWT
@@ -181,33 +179,24 @@ function authenticateToken(req, res, next) {
   });
 }
 
-// Verify token endpoint
-app.post("/verify-token", (req, res) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-
-  if (!token) return res.status(401).json({ error: "No token provided" });
-
-  jwt.verify(token, SECRET_KEY, (err, decoded) => {
-    if (err) return res.status(403).json({ error: "Invalid or expired token" });
-
-    res.json({ email: decoded.email });
-  });
-});
-
 // Get user chats
-app.get("/chats", authenticateToken, (req, res) => {
-  const users = readUsers();
-  const user = users[req.user.email];
-  res.json(user.chats);
+app.get("/chats", authenticateToken, async (req, res) => {
+  try {
+    const userDoc = await db.collection("users").doc(req.user.email).get();
+    res.json(userDoc.data().chats || []);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching chats", details: error.message });
+  }
 });
 
 // Update user chats
-app.post("/chats", authenticateToken, (req, res) => {
-  const users = readUsers();
-  users[req.user.email].chats = req.body.chats;
-  writeUsers(users);
-  res.json({ message: "Chats updated successfully" });
+app.post("/chats", authenticateToken, async (req, res) => {
+  try {
+    await db.collection("users").doc(req.user.email).update({ chats: req.body.chats });
+    res.json({ message: "Chats updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Error updating chats", details: error.message });
+  }
 });
 
 const PORT = 3001;
