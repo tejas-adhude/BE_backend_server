@@ -151,6 +151,11 @@ app.post("/login", async (req, res) => {
     }
 
     const user = userDoc.data();
+
+    if (!user.verified) {
+      return res.status(401).json({ error: "User is not verified, Do signup again." });
+    }
+
     const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword) {
