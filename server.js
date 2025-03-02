@@ -179,6 +179,20 @@ function authenticateToken(req, res, next) {
   });
 }
 
+// Verify token endpoint
+app.post("/verify-token", (req, res) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) return res.status(401).json({ error: "No token provided" });
+
+  jwt.verify(token, SECRET_KEY, (err, decoded) => {
+    if (err) return res.status(403).json({ error: "Invalid or expired token" });
+
+    res.json({ email: decoded.email });
+  });
+});
+
 // Get user chats
 app.get("/chats", authenticateToken, async (req, res) => {
   try {
