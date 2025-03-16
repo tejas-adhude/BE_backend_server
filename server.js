@@ -198,6 +198,33 @@ app.post("/verify-token", (req, res) => {
   });
 });
 
+// Change Password Route
+app.post("/change-password", authenticateToken, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const email = req.user.email;
+
+  try {
+    const userDoc = await db.collection("users").doc(email).get();
+    if (!userDoc.exists) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const user = userDoc.data();
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Incorrect current password" });
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    await db.collection("users").doc(email).update({ password: hashedNewPassword });
+
+    res.json({ message: "Password changed successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to change password", details: error.message });
+  }
+});
+
 // Get user chats
 app.get("/chats", authenticateToken, async (req, res) => {
   try {
