@@ -1,5 +1,19 @@
+const p1 = "I will give you a message, you to analyze the message and return the suitable only from mention return structure."
+
+const p2 = 'check if message mention to do any given task. then returnn in format (example message:set alarm at 10:00 am, example return: {"command":"set alarm",parameters:{"alarm_time":"10:00"}})'
+
+const p3 = {"tasks": {"set alarm": {"alarm_time": "value in 24 hour format"},"take photo": {},"screenshot": {},"internet speed": {},"time": {},"action": {},"open": {"app_name": "name of the app"}, "translate": { "sourceLang": "", "targetLang": "", "text": "" }, "news": { "category": "" }, "introduction": {}}}
+
+const p4 ='if the message is not mention to do task but tends to do task from given, the return output as {"tends_task":"True","comfirmation_message":"comfirmation_message_as_per_you","command":"expected_to_do_from_task","parameters":{}})'
+
+const p5 ='if the message dont convey any task or tends any task then consider it normal query and reply by yourself. return {"tends_task":"False","reply":"reply by you or the answer"}'
+
+const p6 = 'if the can"t understand the message, then return {"tends_task":"False","reply":"I am unable to understand the message."}'
+
+const p7 = 'Revise of all format with example give result in only one of the given format without any extra, format 1: {"command":"set alarm",parameters:{"alarm_time":"10:00"}} fprmat 2: {"tends_task":"True","comfirmation_message":"comfirmation_message_as_per_you","command":"expected_to_do_from_task","parameters":{}}, format 3: {"tends_task":"False","reply":"reply by you or the answer"} , format 4: {"tends_task":"False","reply":"I am unable to understand the message."} '
+
 module.exports = {
-    AI_PROMOT: 'I will give you a message, you to analyze the message and check if the message will do any of the given task {"set alarm": {"alarm_time": "value in 24 hour format"},"take photo": {},"screenshot": {},"internet speed": {},"time": {},"action": {},"open": {"app_name": "name of the app"}} , if so u have return me the in format , parameters will fill with there value. (example message: set alarm at 10:00 am, output: {"command":"set alarm",parameters:{"alarm_time":"10:00"}}), if the message is not mention to do task but tends to do task from given, the return output as {"tends_task":"True","comfirmation_message":"comfirmation_message_as_per_you","command":"expected_to_do_from_task","parameters":{}}), and if the message dont convey any task or tends any task then consider it normal query and reply by you or the answer, return {"tends_task":"False","reply":"reply by you or the answer"}, if the can"t understand the message, then return {"tends_task":"False","reply":"I am unable to understand the message."}, and dont reply any other text except output.'
+    AI_PROMOT: p1 + p2 + JSON.stringify(p3) + p4 + p5 + p6 + p7
 }
 
 

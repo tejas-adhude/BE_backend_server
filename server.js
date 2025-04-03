@@ -6,6 +6,7 @@ const nodemailer = require("nodemailer");
 const Groq = require('groq-sdk');
 const { AI_PROMOT } = require('./utils.js');
 const { db, auth } = require("./firebase"); // Firebase connectivity
+const check_server_side_task = require("./Backend_Task/tasks.js")
 require("dotenv").config();
 
 const app = express();
@@ -64,17 +65,36 @@ async function getGroqReply(message, client) {
 
     return chatCompletion.choices[0].message.content;
   } catch (error) {
-    console.error("Error fetching AI response:", error);
-    return "Error: Unable to get response.";
+    return null;
   }
 }
 
 // API to get AI response
 app.post("/get-ai-reply", async (req, res) => {
   const { message } = req.body;
-  const reply = await getGroqReply(message, GroqGlobal);
+  let reply = "";
+
+  try {
+    reply = await getGroqReply(message, GroqGlobal);
+    // console.log(reply);
+
+    if (!reply) {
+      reply = JSON.stringify({ "tends_task": "False", "reply": "Unable to get response from AI." });
+    } else {
+      const csst = await check_server_side_task(reply);
+      if (csst) {
+        reply = csst;
+      }
+    }
+  } catch (error) {
+    // console.error("Error in /get-ai-reply:", error);
+    reply = JSON.stringify({ "tends_task": "False", "reply": "Unable to get response from AI." });
+  }
+
+  // console.log(reply);
   res.json({ reply });
 });
+
 
 // Signup route
 app.post("/signup", async (req, res) => {
