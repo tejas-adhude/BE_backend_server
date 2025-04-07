@@ -51,13 +51,15 @@ async function sendOTP(email, otp) {
 }
 
 // Get AI response
-async function getGroqReply(message, client) {
+async function getGroqReply(message, previousChat, client) {
   try {
+    const mm=`${AI_PROMOT} 'PREVIOUS CHAT' ${previousChat} 'CURRENT MESSAGE: ' ${message}`
+    console.log(mm)
     const chatCompletion = await client.chat.completions.create({
       messages: [
         {
           role: "user",
-          content: `${AI_PROMOT} 'REAL MESSAGE: '${message}`,
+          content: mm,
         },
       ],
       model: "llama-3.3-70b-versatile",
@@ -71,11 +73,12 @@ async function getGroqReply(message, client) {
 
 // API to get AI response
 app.post("/get-ai-reply", async (req, res) => {
-  const { message } = req.body;
+  const { message, previousChat } = req.body;
+  
   let reply = "";
 
   try {
-    reply = await getGroqReply(message, GroqGlobal);
+    reply = await getGroqReply(message,JSON.stringify(previousChat, null) , GroqGlobal);
     // console.log(reply);
 
     if (!reply) {

@@ -1,4 +1,4 @@
-const p1 = "I will give you a message, you to analyze the message and return the suitable only from mention return structure."
+const p1 = "I will give you a CURRENT MASSAGE and PREVIOUS CHAT, you to analyze the message and PREVIOUS CHAT  and have return the suitable only from mention return structure."
 
 const p2 = 'check if message mention to do any given task. then returnn in format (example message:set alarm at 10:00 am, example return: {"command":"set alarm",parameters:{"alarm_time":"10:00"}}), the command should be from given set of tasks'
 
