@@ -27,7 +27,7 @@ async function check_server_side_task(dis) {
     if (dis["command"] in tasks) {
       const [TaskFunction, _] = tasks[dis["command"]];
       const params = dis["parameters"] || {}; // Ensure params is at least an empty object
-      return JSON.stringify({ "tends_task": "False", "reply": await TaskFunction(params) });
+      return JSON.stringify({ "tends_task": "False", "reply": await TaskFunction(params),"title":dis["title"] });
     } else {
       return null
     }

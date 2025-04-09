@@ -17,7 +17,7 @@ const p3 = {
       app_name: "name of the app",
       allowed_names: ["notepad", "spotify", "calculator", "chrome", "vlc", "camera", "word", "excel"]
     },
-    "translate": { sourceLang: "", targetLang: "", text: "" },
+    
     "news": { category: "" },
     "introduction": {}
   }
