@@ -11,11 +11,12 @@ const tasks = {
 };
 
 async function check_server_side_task(dis) {
-  // console.log(dis)
+  console.log(dis)
 
   if (typeof dis === "string") {
     try {
       dis = JSON.parse(dis);
+      console.log(dis)
     } catch (error) {
       // console.log(error)
       return JSON.stringify({"tends_task": "False", "reply": "Invalid JSON input","title":"none"});
