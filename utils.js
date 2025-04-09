@@ -37,7 +37,7 @@ const p7 = `If the message is unclear or not understandable, return:
 {"tends_task": "False", "reply": "I am unable to understand the message.", "title": "none or title"}`;
 
 const p8 = `Always your response should in only one of the following formats without any extra part with valid JSON
-The reply parameter string should support markdown, escaped characters (like \\n, \\t), and formatting symbols (like **bold**, *italic*, \`inline\`, etc.).
+The reply parameter double quoted string should support markdown, escaped characters (like \\n, \\t), and formatting symbols (like **bold**, *italic*, \`inline\`, etc.).
 
 Format 1:
 {"command":"set alarm","parameters":{"alarm_time":"10:00"},"title":"none or title"}
