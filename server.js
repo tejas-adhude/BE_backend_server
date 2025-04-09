@@ -51,15 +51,13 @@ async function sendOTP(email, otp) {
 }
 
 // Get AI response
-async function getGroqReply(message, previousChat, client) {
+async function getGroqReply(message, previousChat, isFirstMassage, client) {
   try {
-    const mm=`${AI_PROMOT} 'PREVIOUS CHAT' ${previousChat} 'CURRENT MESSAGE: ' ${message}`
-    console.log(mm)
     const chatCompletion = await client.chat.completions.create({
       messages: [
         {
           role: "user",
-          content: mm,
+          content: `${AI_PROMOT} "PREVIOUS CHAT" ${previousChat} "IS FIRST MASSAGE" ${isFirstMassage} 'CURRENT MESSAGE: ' ${message}`,
         },
       ],
       model: "llama-3.3-70b-versatile",
@@ -73,16 +71,16 @@ async function getGroqReply(message, previousChat, client) {
 
 // API to get AI response
 app.post("/get-ai-reply", async (req, res) => {
-  const { message, previousChat } = req.body;
+  const { message, previousChat, isFirstMassage } = req.body;
   
   let reply = "";
 
   try {
-    reply = await getGroqReply(message,JSON.stringify(previousChat, null) , GroqGlobal);
+    reply = await getGroqReply(message,JSON.stringify(previousChat, null),isFirstMassage , GroqGlobal);
     // console.log(reply);
 
     if (!reply) {
-      reply = JSON.stringify({ "tends_task": "False", "reply": "Unable to get response from AI." });
+      reply = JSON.stringify({ "tends_task": "False", "reply": "Unable to get response from AI.", "title":"none" });
     } else {
       const csst = await check_server_side_task(reply);
       if (csst) {
@@ -91,7 +89,7 @@ app.post("/get-ai-reply", async (req, res) => {
     }
   } catch (error) {
     // console.error("Error in /get-ai-reply:", error);
-    reply = JSON.stringify({ "tends_task": "False", "reply": "Unable to get response from AI." });
+    reply = JSON.stringify({ "tends_task": "False", "reply": "Unable to get response from AI.","title":"none" });
   }
 
   // console.log(reply);

@@ -18,7 +18,7 @@ async function check_server_side_task(dis) {
       dis = JSON.parse(dis);
     } catch (error) {
       // console.log(error)
-      return JSON.stringify({"tends_task": "False", "reply": "Invalid JSON input" });
+      return JSON.stringify({"tends_task": "False", "reply": "Invalid JSON input","title":"none"});
     }
   }
 

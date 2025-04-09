@@ -10,7 +10,7 @@ async function Introduction() {
 }
 
 async function Translation({sourceLang, targetLang, text}) {
-    console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS)
+    // console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS)
     // return "NONE"
     try {
         
