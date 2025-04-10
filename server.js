@@ -205,10 +205,10 @@ app.post("/resend-otp", async (req, res) => {
     const otpExpiry = Date.now() + OTP_EXPIRY
 
     await db.collection("users").doc(email).update({
+      resetPasswordOtp: otp,
+      resetPasswordOtpExpiry: otpExpiry,
       otp,
-      otpExpiry,
-      otp,
-      otpExpiry,
+      otpExpiry
     })
 
     await sendOTP(email, otp, "Zoro")
