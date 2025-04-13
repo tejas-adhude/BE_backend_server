@@ -4,9 +4,10 @@ const jwt = require("jsonwebtoken")
 const cors = require("cors")
 const nodemailer = require("nodemailer")
 const Groq = require("groq-sdk")
-const { AI_PROMOT } = require("./utils.js")
+const { AI_PROMOT } = require("./utils/ai-promot.js")
 const { db, auth } = require("./firebase") // Firebase connectivity
 const check_server_side_task = require("./Backend_Task/tasks.js")
+const {getGroqReply, queryOllama} = require("./utils/ai-models.js")
 require("dotenv").config()
 
 const app = express()
@@ -50,24 +51,6 @@ async function sendOTP(email, otp, type) {
   await transporter.sendMail(mailOptions)
 }
 
-// Get AI response
-async function getGroqReply(message, previousChat, isFirstMassage, client) {
-  try {
-    const chatCompletion = await client.chat.completions.create({
-      messages: [
-        {
-          role: "user",
-          content: `${AI_PROMOT} "PREVIOUS CHAT" ${previousChat} "IS FIRST MASSAGE" ${isFirstMassage} 'CURRENT MESSAGE: ' ${message}`,
-        },
-      ],
-      model: "llama-3.3-70b-versatile",
-    })
-
-    return chatCompletion.choices[0].message.content
-  } catch (error) {
-    return null
-  }
-}
 
 // API to get AI response
 app.post("/get-ai-reply", async (req, res) => {
@@ -76,7 +59,10 @@ app.post("/get-ai-reply", async (req, res) => {
   let reply = ""
 
   try {
-    reply = await getGroqReply(message, JSON.stringify(previousChat, null), isFirstMassage, GroqGlobal)
+    const promot = `${AI_PROMOT} "PREVIOUS CHAT" ${previousChat} "IS FIRST MASSAGE" ${isFirstMassage} 'CURRENT MESSAGE: ' ${message}`
+
+    // reply = await queryOllama(promot)
+    reply = await getGroqReply(promot,GroqGlobal)
     // console.log(reply);
 
     if (!reply) {
